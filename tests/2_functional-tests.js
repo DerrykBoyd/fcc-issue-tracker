@@ -36,29 +36,29 @@ suite('Functional Tests', function() {
         });
       });
       
-      test('Required fields filled in', function(done) {
+      // test('Required fields filled in', function(done) {
         
-      });
+      // });
       
-      test('Missing required fields', function(done) {
+      // test('Missing required fields', function(done) {
         
-      });
+      // });
       
     });
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      test('No body', function(done) {
+      // test('No body', function(done) {
         
-      });
+      // });
       
-      test('One field to update', function(done) {
+      // test('One field to update', function(done) {
         
-      });
+      // });
       
-      test('Multiple fields to update', function(done) {
+      // test('Multiple fields to update', function(done) {
         
-      });
+      // });
       
     });
     
@@ -84,25 +84,25 @@ suite('Functional Tests', function() {
         });
       });
       
-      test('One filter', function(done) {
+      // test('One filter', function(done) {
         
-      });
+      // });
       
-      test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
+      // test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         
-      });
+      // });
       
     });
     
     suite('DELETE /api/issues/{project} => text', function() {
       
-      test('No _id', function(done) {
+      // test('No _id', function(done) {
         
-      });
+      // });
       
-      test('Valid _id', function(done) {
+      // test('Valid _id', function(done) {
         
-      });
+      // });
       
     });
 
