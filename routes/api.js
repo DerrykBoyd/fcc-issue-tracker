@@ -89,9 +89,22 @@ module.exports = function (app) {
     
     .delete(function (req, res){
       var project = req.params.project;
+      if (!ObjectId.isValid(req.body._id)) {
+        res.send(`_id error`);
+        return;
+      }
+      let id = new ObjectId(req.body._id);
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
         let collection = db.collection(COLLECTION_NAME);
-    
+        collection.findOneAndDelete({_id: id}
+          , (err, r) => {
+            if (err) res.send(`could not delete ${id}`);
+            if (!r.value) {
+              res.send(`could not delete ${id}`);
+              return;
+            }
+            else res.send('deleted');
+          })
       })
     });
     
