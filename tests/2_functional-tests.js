@@ -29,36 +29,93 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          
-          //fill me in too!
-          
+          assert.isObject(res.body);
+          assert.equal(res.body.issue_title, 'Title');
+          assert.equal(res.body.issue_text, 'text');
+          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
+          assert.equal(res.body.assigned_to, 'Chai and Mocha');
+          assert.equal(res.body.status_text, 'In QA');
           done();
         });
       });
       
-      // test('Required fields filled in', function(done) {
-        
-      // });
+      test('Required fields filled in', function(done) {
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'Title',
+            issue_text: 'text',
+            created_by: 'Functional Test - Required Fields Only'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.isObject(res.body);
+            assert.equal(res.body.issue_title, 'Title');
+            assert.equal(res.body.issue_text, 'text');
+            assert.equal(res.body.created_by, 'Functional Test - Required Fields Only');
+            assert.equal(res.body.assigned_to, '');
+            assert.equal(res.body.status_text, '');
+            done();
+          })
+      });
       
-      // test('Missing required fields', function(done) {
-        
-      // });
-      
+      test('Missing required fields', function(done) {
+        chai.request(server)
+          .post('/api/issues/test')
+          .send({
+            issue_title: 'Fields Missing',
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'Required Fields Missing');
+            done();
+          })
+      });
     });
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      // test('No body', function(done) {
-        
-      // });
+      test('No body', function(done) {
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: '5c96a17f7ccede0188743656'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'no updated field sent');
+            done();
+          })
+      });
       
-      // test('One field to update', function(done) {
-        
-      // });
+      test('One field to update', function(done) {
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: '5c96a17f7ccede0188743656',
+            issue_text: 'Updated!'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'successfully updated');
+            done();
+          })
+      });
       
-      // test('Multiple fields to update', function(done) {
-        
-      // });
+      test('Multiple fields to update', function(done) {
+        chai.request(server)
+          .put('/api/issues/test')
+          .send({
+            _id: '5c96a17f7ccede0188743656',
+            issue_text: 'Updated!',
+            issue_title: 'Updated Title'
+          })
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'successfully updated');
+            done();
+          })
+      });
       
     });
     
@@ -84,9 +141,19 @@ suite('Functional Tests', function() {
         });
       });
       
-      // test('One filter', function(done) {
-        
-      // });
+      test('One filter', function(done) {
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({
+          issue_title: 'Updated Title'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.equal(res.body[0].issue_title, 'Updated Title');
+          done();
+        });
+      });
       
       // test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         
