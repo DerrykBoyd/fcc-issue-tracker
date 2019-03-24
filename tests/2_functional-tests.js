@@ -14,7 +14,9 @@ var server = require('../server');
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
-  
+
+    this.timeout(5000);
+
     suite('POST /api/issues/{project} => object with issue data', function() {
       
       test('Every field filled in', function(done) {
@@ -155,21 +157,47 @@ suite('Functional Tests', function() {
         });
       });
       
-      // test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        
-      // });
+      test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({
+          issue_title: 'Updated Title',
+          issue_text: 'Updated!'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.equal(res.body[0].issue_title, 'Updated Title');
+          assert.equal(res.body[0].issue_text, 'Updated!')
+          done();
+        });
+      });
       
     });
     
     suite('DELETE /api/issues/{project} => text', function() {
       
-      // test('No _id', function(done) {
-        
-      // });
+      test('No _id', function(done) {
+        chai.request(server)
+        .delete('/api/issues/test')
+        .query({})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, '_id error')
+          done();
+        });
+      });
       
-      // test('Valid _id', function(done) {
-        
-      // });
+      test('Valid _id', function(done) {
+        chai.request(server)
+        .delete('/api/issues/test')
+        .send({_id:'5c96a28f42b85101934abb36'})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'could not delete 5c96a28f42b85101934abb36')
+          done();
+        });
+      });
       
     });
 
